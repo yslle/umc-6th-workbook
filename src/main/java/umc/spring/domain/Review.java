@@ -20,8 +20,10 @@ public class Review extends BaseEntity {
 
     private Float rating;
 
+    @Column(nullable = false, length = 200)
     private String content;
 
+    @Column(length = 200)
     private String reply;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -19,6 +19,7 @@ public class Mission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 20)
     private String ownerCode;
 
     private LocalDate deadline;

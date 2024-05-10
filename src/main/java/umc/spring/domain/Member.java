@@ -25,12 +25,16 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 20)
     private String name;
 
+    @Column(nullable = false, length = 60)
     private String address;
 
+    @Column(nullable = false, length = 30)
     private String email;
 
+    @Column(nullable = false, length = 11)
     private String phone;
 
     private Integer point;

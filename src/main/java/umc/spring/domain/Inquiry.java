@@ -18,11 +18,11 @@ public class Inquiry extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false, length = 20)
     private String title;
 
+    @Column(nullable = false, length = 20)
     private String content;
-
-    private String image;
 
     private String reply;
 
