@@ -16,4 +16,8 @@ public class InquiryImage extends BaseEntity {
     private Long id;
 
     private String imageUrl;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inquiry_id")
+    private Inquiry inquiry;
 }

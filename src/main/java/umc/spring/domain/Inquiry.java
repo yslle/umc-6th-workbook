@@ -1,11 +1,11 @@
 package umc.spring.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import umc.spring.domain.common.BaseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,4 +25,11 @@ public class Inquiry extends BaseEntity {
     private String image;
 
     private String reply;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @OneToMany(mappedBy = "inquiry", cascade = CascadeType.ALL)
+    private List<InquiryImage> inquiryImageList = new ArrayList<>();
 }
