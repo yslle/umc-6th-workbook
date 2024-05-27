@@ -6,14 +6,8 @@ import umc.spring.apiPayload.code.status.ErrorStatus;
 import umc.spring.apiPayload.exception.handler.RegionHandler;
 import umc.spring.apiPayload.exception.handler.StoreHandler;
 import umc.spring.converter.StoreConverter;
-import umc.spring.domain.Member;
-import umc.spring.domain.Region;
-import umc.spring.domain.Review;
-import umc.spring.domain.Store;
-import umc.spring.repository.MemberRepository;
-import umc.spring.repository.RegionRepository;
-import umc.spring.repository.ReviewRepository;
-import umc.spring.repository.StoreRepository;
+import umc.spring.domain.*;
+import umc.spring.repository.*;
 import umc.spring.web.dto.StoreRequestDTO;
 
 @Service
@@ -24,7 +18,8 @@ public class StoreCommandServiceImpl implements StoreCommandService {
     private final RegionRepository regionRepository;
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
-    
+    private final MissionRepository missionRepository;
+
     @Override
     public Store joinStore(StoreRequestDTO.JoinDto request) {
 
@@ -53,6 +48,18 @@ public class StoreCommandServiceImpl implements StoreCommandService {
         newReview.setStore(store);
 
         return reviewRepository.save(newReview);
+    }
+
+    @Override
+    public Mission createMission(StoreRequestDTO.CreateMissionDto request, Long storeId) {
+        // store 조회
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new StoreHandler(ErrorStatus.STORE_NOT_FOUND));
+
+        Mission newMission = StoreConverter.toMission(request);
+        newMission.setStore(store);
+
+        return missionRepository.save(newMission);
     }
 
 }
