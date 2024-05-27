@@ -2,6 +2,7 @@ package umc.spring.web.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import umc.spring.apiPayload.ApiResponse;
 import umc.spring.converter.StoreConverter;
@@ -9,10 +10,13 @@ import umc.spring.domain.Mission;
 import umc.spring.domain.Review;
 import umc.spring.domain.Store;
 import umc.spring.service.StoreService.StoreCommandService;
+import umc.spring.validation.annotation.ExistMember;
+import umc.spring.validation.annotation.ExistStore;
 import umc.spring.web.dto.StoreRequestDTO;
 import umc.spring.web.dto.StoreResponseDTO;
 
 @RestController
+@Validated
 @RequiredArgsConstructor
 @RequestMapping("/stores")
 public class StoreRestController {
@@ -26,8 +30,10 @@ public class StoreRestController {
     }
 
     @PostMapping("/{storeId}/reviews")
-    public ApiResponse<StoreResponseDTO.CreateReviewResultDTO> createReview(@RequestBody @Valid StoreRequestDTO.CreateReviewDto request, @PathVariable Long storeId) {
-        Review review = storeCommandService.createReview(request, storeId);
+    public ApiResponse<StoreResponseDTO.CreateReviewResultDTO> createReview(@RequestBody @Valid StoreRequestDTO.CreateReviewDto request,
+                                                                            @ExistStore @PathVariable Long storeId,
+                                                                            @ExistMember @RequestParam Long memberId) {
+        Review review = storeCommandService.createReview(request, storeId, memberId);
         return ApiResponse.onSuccess(StoreConverter.toCreateReviewResultDTO(review));
     }
 

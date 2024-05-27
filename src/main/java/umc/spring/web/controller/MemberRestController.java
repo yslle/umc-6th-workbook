@@ -14,8 +14,8 @@ import umc.spring.web.dto.MemberRequestDTO;
 import umc.spring.web.dto.MemberResponseDTO;
 
 @RestController
-@RequiredArgsConstructor
 @Validated
+@RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberRestController {
 

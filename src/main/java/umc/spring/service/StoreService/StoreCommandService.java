@@ -8,7 +8,7 @@ import umc.spring.web.dto.StoreRequestDTO;
 public interface StoreCommandService {
     Store joinStore(StoreRequestDTO.JoinDto request);
 
-    Review createReview(StoreRequestDTO.CreateReviewDto request, Long storeId);
+    Review createReview(StoreRequestDTO.CreateReviewDto request, Long storeId, Long memberId);
 
     Mission createMission(StoreRequestDTO.CreateMissionDto request, Long storeId);
 }

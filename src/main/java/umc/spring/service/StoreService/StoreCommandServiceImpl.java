@@ -35,17 +35,10 @@ public class StoreCommandServiceImpl implements StoreCommandService {
     }
 
     @Override
-    public Review createReview(StoreRequestDTO.CreateReviewDto request, Long storeId) {
-        // store 조회
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new StoreHandler(ErrorStatus.STORE_NOT_FOUND));
-
+    public Review createReview(StoreRequestDTO.CreateReviewDto request, Long storeId, Long memberId) {
         Review newReview = StoreConverter.toReview(request);
-        // 하드코딩 된 사용자 사용
-        String name = "승연";
-        Member member = memberRepository.findByName(name);
-        newReview.setMember(member);
-        newReview.setStore(store);
+        newReview.setMember(memberRepository.findById(memberId).get());
+        newReview.setStore(storeRepository.findById(storeId).get());
 
         return reviewRepository.save(newReview);
     }
