@@ -2,6 +2,7 @@ package umc.spring.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import umc.spring.domain.common.BaseEntity;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class Store extends BaseEntity {
 
     private String operatingHours;
 
+    @ColumnDefault("0")
     private Float rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,4 +38,16 @@ public class Store extends BaseEntity {
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Mission> missionList = new ArrayList<>();
+
+    // 연관 관계 편의 메서드
+    public void setRegion(Region region) {
+        if (this.region != null) {
+            this.region.getStoreList().remove(this);
+        }
+        this.region = region;
+        if (region != null) {
+            region.getStoreList().add(this);
+        }
+    }
+
 }
