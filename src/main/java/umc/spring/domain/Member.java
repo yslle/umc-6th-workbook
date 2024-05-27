@@ -2,6 +2,9 @@ package umc.spring.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import umc.spring.domain.common.BaseEntity;
 import umc.spring.domain.enums.Gender;
 import umc.spring.domain.enums.MemberRole;
@@ -16,6 +19,8 @@ import java.util.List;
 
 @Entity // jpa의 엔티티임을 명시
 @Getter
+@DynamicUpdate
+@DynamicInsert
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -31,12 +36,13 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length = 60)
     private String address;
 
-    @Column(nullable = false, length = 30)
+//    @Column(nullable = false, length = 30)
     private String email;
 
     @Column(nullable = false, length = 11)
     private String phone;
 
+    @ColumnDefault("0")
     private Integer point;
 
     @Enumerated(EnumType.STRING)
@@ -46,6 +52,7 @@ public class Member extends BaseEntity {
 //    private SocialType socialType;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
     private MemberStatus status;
 
     @Enumerated(EnumType.STRING)
