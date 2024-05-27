@@ -2,16 +2,16 @@ package umc.spring.validation.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import umc.spring.validation.validator.StoreExistValidator;
+import umc.spring.validation.validator.MissionChallengingValidator;
 
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = StoreExistValidator.class)
+@Constraint(validatedBy = MissionChallengingValidator.class)
 @Target( { ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ExistStore {
-    String message() default "해당하는 가게가 존재하지 않습니다.";
+public @interface IsChallengingMission {
+    String message() default "해당 미션에 이미 도전중입니다.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
