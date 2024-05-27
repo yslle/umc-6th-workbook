@@ -19,4 +19,13 @@ public class StoreRequestDTO {
         @NotNull
         String region;
     }
+
+    @Getter
+    public static class CreateReviewDto {
+        @NotEmpty
+        String content;
+        @NotNull
+        Float rating;
+    }
+
 }
