@@ -70,11 +70,12 @@ public class StoreConverter {
     public static StoreResponseDTO.ReviewPreViewDTO reviewPreViewDTO(Review review){
         return StoreResponseDTO.ReviewPreViewDTO.builder()
                 .ownerNickname(review.getMember().getName())
-                .score(review.getRating())
+                .rating(review.getRating())
                 .createdAt(review.getCreatedAt().toLocalDate())
-                .body(review.getContent())
+                .content(review.getContent())
                 .build();
     }
+
     public static StoreResponseDTO.ReviewPreViewListDTO reviewPreViewListDTO(Page<Review> reviewList){
 
         List<StoreResponseDTO.ReviewPreViewDTO> reviewPreViewDTOList = reviewList.stream()

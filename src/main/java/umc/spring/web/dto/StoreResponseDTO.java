@@ -57,8 +57,31 @@ public class StoreResponseDTO {
     @AllArgsConstructor
     public static class ReviewPreViewDTO{
         String ownerNickname;
-        Float score;
-        String body;
+        Float rating;
+        String content;
         LocalDate createdAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MissionPreViewListDTO{
+        List<MissionPreViewDTO> missionList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MissionPreViewDTO {
+        Integer reward ;
+        LocalDate deadline;
+        String content;
     }
 }
