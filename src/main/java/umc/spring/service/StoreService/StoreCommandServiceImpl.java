@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import umc.spring.apiPayload.code.status.ErrorStatus;
 import umc.spring.apiPayload.exception.handler.RegionHandler;
+import umc.spring.apiPayload.exception.handler.ReviewHandler;
 import umc.spring.apiPayload.exception.handler.StoreHandler;
 import umc.spring.aws.s3.AmazonS3Manager;
 import umc.spring.converter.StoreConverter;
@@ -11,6 +12,7 @@ import umc.spring.domain.*;
 import umc.spring.repository.*;
 import umc.spring.web.dto.StoreRequestDTO;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -56,6 +58,23 @@ public class StoreCommandServiceImpl implements StoreCommandService {
 
         reviewImageRepository.save(StoreConverter.toReviewImage(pictureUrl,review));
         return reviewRepository.save(review);
+    }
+
+    @Override
+    public Long deleteReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ReviewHandler(ErrorStatus.REVIEW_NOT_FOUND));
+
+        // S3에서 파일 삭제
+        List<ReviewImage> reviewImages = review.getReviewImageList();
+        for (ReviewImage reviewImage : reviewImages) {
+            s3Manager.deleteFile(reviewImage.getImageUrl());
+        }
+
+        reviewImageRepository.deleteAll(reviewImages);
+        reviewRepository.deleteById(reviewId);
+
+        return reviewId;
     }
 
     @Override

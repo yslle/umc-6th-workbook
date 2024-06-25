@@ -33,6 +33,14 @@ public class StoreResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class DeleteReviewResultDTO{
+        Long reviewId;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class CreateMissionResultDTO{
         Long missionId;
         LocalDateTime createdAt;

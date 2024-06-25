@@ -35,12 +35,14 @@ public class MemberRestController {
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
 
+    @Operation(summary = "회원가입 API")
     @PostMapping("/")
     public ApiResponse<MemberResponseDTO.JoinResultDTO> join(@RequestBody @Valid MemberRequestDTO.JoinDto request){
         Member member = memberCommandService.joinMember(request);
         return ApiResponse.onSuccess(MemberConverter.toJoinResultDTO(member));
     }
 
+    @Operation(summary = "미션 도전하기 API")
     @PostMapping("/missions")
     public ApiResponse<MemberResponseDTO.MemberMissionResultDTO> challengeMission(
             @RequestBody @Valid MemberRequestDTO.DoMission request){

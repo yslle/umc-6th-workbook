@@ -41,6 +41,12 @@ public class StoreConverter {
                 .build();
     }
 
+    public static StoreResponseDTO.DeleteReviewResultDTO toDeleteReviewResultDTO(Long reviewId) {
+        return StoreResponseDTO.DeleteReviewResultDTO.builder()
+                .reviewId(reviewId)
+                .build();
+    }
+
     public static Review toReview(StoreRequestDTO.CreateReviewDto request){
         return Review.builder()
                 .content(request.getContent())
@@ -98,4 +104,5 @@ public class StoreConverter {
                 .reviewList(reviewPreViewDTOList)
                 .build();
     }
+
 }

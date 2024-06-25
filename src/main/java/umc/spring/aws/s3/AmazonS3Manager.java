@@ -1,6 +1,8 @@
 package umc.spring.aws.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3URI;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,19 @@ public class AmazonS3Manager{
         }
 
         return amazonS3.getUrl(amazonConfig.getBucket(), keyName).toString();
+    }
+
+    // 파일 삭제
+    public void deleteFile(String fileName) {
+        try {
+            AmazonS3URI uri = new AmazonS3URI(fileName);
+            String bucket = uri.getBucket();
+            String key = uri.getKey();
+
+            amazonS3.deleteObject(bucket, key);
+        } catch (IllegalArgumentException e) {
+            log.error("error at AmazonS3Manager deleteFile : {}", (Object) e.getStackTrace());
+        }
     }
 
     public String generateReviewKeyName(Uuid uuid) {

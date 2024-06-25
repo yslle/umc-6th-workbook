@@ -34,6 +34,7 @@ public class StoreRestController {
     private final StoreCommandService storeCommandService;
     private final StoreQueryService storeQueryService;
 
+    @Operation(summary = "가게 추가 API")
     @PostMapping("/")
     public ApiResponse<StoreResponseDTO.JoinResultDTO> join(@RequestBody @Valid StoreRequestDTO.JoinDto request) {
         Store store = storeCommandService.joinStore(request);
@@ -49,6 +50,14 @@ public class StoreRestController {
         return ApiResponse.onSuccess(StoreConverter.toCreateReviewResultDTO(review));
     }
 
+    @Operation(summary = "리뷰 삭제 API")
+    @DeleteMapping(value = "/reviews/{reviewId}")
+    public ApiResponse<StoreResponseDTO.DeleteReviewResultDTO> deleteReview(@PathVariable Long reviewId) {
+        Long deletedReview = storeCommandService.deleteReview(reviewId);
+        return ApiResponse.onSuccess(StoreConverter.toDeleteReviewResultDTO(deletedReview));
+    }
+
+    @Operation(summary = "미션 추가 API")
     @PostMapping("/{storeId}/missions")
     public ApiResponse<StoreResponseDTO.CreateMissionResultDTO> createMission(@RequestBody @Valid StoreRequestDTO.CreateMissionDto request, @PathVariable Long storeId) {
         Mission mission = storeCommandService.createMission(request, storeId);

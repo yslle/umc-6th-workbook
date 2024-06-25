@@ -11,4 +11,6 @@ public interface StoreCommandService {
     Review createReview(StoreRequestDTO.CreateReviewDto request, Long storeId, Long memberId);
 
     Mission createMission(StoreRequestDTO.CreateMissionDto request, Long storeId);
+
+    Long deleteReview(Long reviewId);
 }
