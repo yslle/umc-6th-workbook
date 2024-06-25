@@ -3,6 +3,8 @@ package umc.spring.web.dto;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -22,12 +24,14 @@ public class StoreRequestDTO {
         String region;
     }
 
-    @Getter
+    @Getter @Setter
     public static class CreateReviewDto {
         @NotEmpty
         String content;
         @NotNull
         Float rating;
+
+        MultipartFile reviewPicture;
     }
 
     @Getter

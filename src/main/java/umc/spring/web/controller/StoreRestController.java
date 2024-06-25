@@ -40,8 +40,9 @@ public class StoreRestController {
         return ApiResponse.onSuccess(StoreConverter.toJoinResultDTO(store));
     }
 
-    @PostMapping("/{storeId}/reviews")
-    public ApiResponse<StoreResponseDTO.CreateReviewResultDTO> createReview(@RequestBody @Valid StoreRequestDTO.CreateReviewDto request,
+    @Operation(summary = "특정 가게에 리뷰 등록 API")
+    @PostMapping(value = "/{storeId}/reviews", consumes = "multipart/form-data")
+    public ApiResponse<StoreResponseDTO.CreateReviewResultDTO> createReview(@ModelAttribute @Valid StoreRequestDTO.CreateReviewDto request,
                                                                             @ExistStore @PathVariable Long storeId,
                                                                             @ExistMember @RequestParam Long memberId) {
         Review review = storeCommandService.createReview(request, storeId, memberId);

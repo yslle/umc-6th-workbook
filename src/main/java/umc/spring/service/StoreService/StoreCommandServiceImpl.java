@@ -5,10 +5,13 @@ import org.springframework.stereotype.Service;
 import umc.spring.apiPayload.code.status.ErrorStatus;
 import umc.spring.apiPayload.exception.handler.RegionHandler;
 import umc.spring.apiPayload.exception.handler.StoreHandler;
+import umc.spring.aws.s3.AmazonS3Manager;
 import umc.spring.converter.StoreConverter;
 import umc.spring.domain.*;
 import umc.spring.repository.*;
 import umc.spring.web.dto.StoreRequestDTO;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,9 @@ public class StoreCommandServiceImpl implements StoreCommandService {
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final MissionRepository missionRepository;
+    private final UuidRepository uuidRepository;
+    private final AmazonS3Manager s3Manager;
+    private final ReviewImageRepository reviewImageRepository;
 
     @Override
     public Store joinStore(StoreRequestDTO.JoinDto request) {
@@ -36,11 +42,20 @@ public class StoreCommandServiceImpl implements StoreCommandService {
 
     @Override
     public Review createReview(StoreRequestDTO.CreateReviewDto request, Long storeId, Long memberId) {
-        Review newReview = StoreConverter.toReview(request);
-        newReview.setMember(memberRepository.findById(memberId).get());
-        newReview.setStore(storeRepository.findById(storeId).get());
+        Review review = StoreConverter.toReview(request);
 
-        return reviewRepository.save(newReview);
+        String uuid = UUID.randomUUID().toString();
+        Uuid savedUuid = uuidRepository.save(Uuid.builder()
+                .uuid(uuid).build());
+
+        String pictureUrl = s3Manager.uploadFile(s3Manager.generateReviewKeyName(savedUuid), request.getReviewPicture());
+
+        review.setMember(memberRepository.findById(memberId).get());
+        review.setStore(storeRepository.findById(storeId).get());
+
+
+        reviewImageRepository.save(StoreConverter.toReviewImage(pictureUrl,review));
+        return reviewRepository.save(review);
     }
 
     @Override
